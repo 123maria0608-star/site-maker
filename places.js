@@ -107,4 +107,48 @@ async function fetchPlacesData(businessName, city, apiKey, outputDir) {
   }
 }
 
-module.exports = { fetchPlacesData, parseHours };
+/**
+ * detectVibe(place, businessType) → 'modern'|'luxury'|'beachy'|'bold'|'minimal'
+ * place may be null (when no Google Places data is available).
+ * businessType is the raw string the user typed (e.g. "taqueria", "auto repair").
+ */
+function detectVibe(place, businessType) {
+  const bt   = (businessType || '').toLowerCase();
+  const name = (place && place.name ? place.name : bt).toLowerCase();
+  const types = (place && place.types ? place.types : []).map(t => t.toLowerCase());
+  const price = place && place.price_level != null ? place.price_level : null;
+
+  // Name-keyword overrides (highest priority)
+  if (/beach|surf|coastal|ocean|bay|island/.test(name)) return 'beachy';
+  if (/luxury|elite|premier|prestige|upscale/.test(name)) return 'luxury';
+
+  // Mexican / street food → bold
+  const mexicanTypes = ['taqueria', 'mexican', 'tacos', 'burrito', 'taco', 'torta', 'carnitas', 'street food'];
+  if (mexicanTypes.some(t => bt.includes(t))) return 'bold';
+  if (types.includes('meal_takeaway') && price !== null && price <= 1) return 'bold';
+
+  // Spa / beauty → minimal
+  if (types.some(t => ['spa', 'beauty_salon', 'hair_care', 'nail_salon'].includes(t))) return 'minimal';
+  if (/spa|beauty|nail|lash|wax/.test(bt)) return 'minimal';
+
+  // Gym / fitness → modern
+  if (types.some(t => ['gym', 'health', 'fitness'].includes(t))) return 'modern';
+  if (/gym|fitness|yoga|pilates|crossfit/.test(bt)) return 'modern';
+
+  // Food with price level
+  const isFoodType = types.some(t => ['restaurant', 'food', 'cafe', 'bakery', 'meal_delivery', 'meal_takeaway'].includes(t));
+  const isFoodBT   = /cafe|coffee|restaurant|diner|bistro|bakery|eatery|boba|food/.test(bt);
+  if (isFoodType || isFoodBT) {
+    if (price !== null && price >= 3) return 'luxury';
+    if (price !== null && price <= 1) return 'bold';
+    return 'modern';
+  }
+
+  // price_level global fallback
+  if (price !== null && price >= 3) return 'luxury';
+  if (price !== null && price <= 1) return 'bold';
+
+  return 'modern';
+}
+
+module.exports = { fetchPlacesData, parseHours, detectVibe };

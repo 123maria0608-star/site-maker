@@ -441,3 +441,36 @@ a.contact-item:hover { border-color:var(--accent); box-shadow:0 4px 16px color-m
 .menu-card__price { font-size:.8rem; font-weight:700; color:var(--accent-text); background:color-mix(in srgb, var(--accent) 12%, transparent); border:1px solid color-mix(in srgb, var(--accent) 22%, transparent); padding:.2rem .65rem; border-radius:100px; white-space:nowrap; flex-shrink:0; }
 .menu-card__desc { font-size:.875rem; opacity:.65; line-height:1.75; }
 @media(max-width:768px) { .menu__grid { grid-template-columns:1fr; } }
+
+/* ── Delivery section ── */
+.delivery-section { padding:5rem 0; background:var(--bg); }
+.delivery-apps { display:flex; flex-wrap:wrap; gap:1.25rem; justify-content:center; margin-top:2rem; }
+.delivery-app {
+  display:flex; align-items:center; gap:.85rem;
+  padding:1rem 1.5rem; border-radius:var(--radius);
+  background:var(--card-bg);
+  border:1.5px solid color-mix(in srgb, var(--text) 10%, transparent);
+  transition:transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  font-size:.92rem; font-weight:600; color:var(--text);
+  min-width:200px;
+}
+.delivery-app img { width:32px; height:32px; object-fit:contain; border-radius:6px; }
+.delivery-app:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:color-mix(in srgb, var(--accent) 40%, transparent); }
+@media(max-width:600px) { .delivery-apps { flex-direction:column; align-items:center; } .delivery-app { width:100%; max-width:320px; } }
+
+/* ── Bilingual toggle ── */
+.lang-toggle {
+  background:color-mix(in srgb, var(--accent) 14%, transparent);
+  border:1.5px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  color:var(--nav-text);
+  font-family:var(--font-body);
+  font-size:.75rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  padding:.35rem .85rem;
+  border-radius:100px;
+  cursor:pointer;
+  transition:all var(--transition);
+  margin-right:.5rem;
+}
+.lang-toggle:hover { background:color-mix(in srgb, var(--accent) 28%, transparent); }

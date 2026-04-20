@@ -1,8 +1,9 @@
 const express = require('express');
 const path    = require('path');
+const fs      = require('fs');
 
-const { generateSite }      = require('./generator-core');
-const { pushSiteToGitHub }  = require('./github');
+const { generateSite, slugify } = require('./generator-core');
+const { pushSiteToGitHub }      = require('./github');
 
 const app = express();
 app.use(express.json());
@@ -13,9 +14,12 @@ let GITHUB_TOKEN = process.env.GITHUB_TOKEN || null;
 try { GITHUB_TOKEN = GITHUB_TOKEN || require('./google-places').githubToken || null; } catch (_) {}
 
 app.post('/generate', async (req, res) => {
-  const { businessName, businessType, city, vibe } = req.body;
-  if (!businessName || !businessType || !city || !vibe) {
-    return res.status(400).json({ error: 'Missing fields' });
+  const { businessName, businessType, city, extraNotes } = req.body;
+  // vibe is now optional — auto-detected if not supplied
+  const vibe = req.body.vibe || null;
+
+  if (!businessName || !businessType || !city) {
+    return res.status(400).json({ error: 'Missing fields: businessName, businessType, city are required.' });
   }
 
   // Server-Sent Events
@@ -30,7 +34,7 @@ app.post('/generate', async (req, res) => {
   };
 
   try {
-    const { slug, files } = await generateSite(businessName, businessType, city, vibe, send);
+    const { slug, files } = await generateSite(businessName, businessType, city, vibe, send, extraNotes);
 
     if (!GITHUB_TOKEN) {
       send({ step: 'error', msg: 'No GitHub token configured. Set GITHUB_TOKEN env var on Render.' });
@@ -46,6 +50,45 @@ app.post('/generate', async (req, res) => {
   }
 
   res.end();
+});
+
+app.post('/update-site', async (req, res) => {
+  const { slug, password, updates } = req.body;
+  if (!slug || !password) {
+    return res.status(400).json({ error: 'slug and password are required' });
+  }
+
+  // Verify password: first 6 chars of slug
+  const expectedPw = slug.slice(0, 6);
+  if (password !== expectedPw) {
+    return res.status(403).json({ error: 'Invalid password' });
+  }
+
+  // Load stored meta
+  const metaPath = path.join(__dirname, 'sites', slug, 'meta.json');
+  if (!fs.existsSync(metaPath)) {
+    return res.status(404).json({ error: 'Site meta not found. Please regenerate the site.' });
+  }
+
+  let meta;
+  try { meta = JSON.parse(fs.readFileSync(metaPath, 'utf8')); }
+  catch (e) { return res.status(500).json({ error: 'Failed to read site meta' }); }
+
+  try {
+    const { businessName, businessType, city, extraNotes } = meta;
+
+    // Regenerate the site
+    const { files } = await generateSite(businessName, businessType, city, null, () => {}, extraNotes);
+
+    if (!GITHUB_TOKEN) {
+      return res.status(500).json({ error: 'No GitHub token configured' });
+    }
+
+    const { repoUrl, liveUrl } = await pushSiteToGitHub(slug, files, GITHUB_TOKEN);
+    res.json({ ok: true, slug, repoUrl, liveUrl, updates });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 const PORT = process.env.PORT || 3000;

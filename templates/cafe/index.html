@@ -17,11 +17,12 @@
     <div class="nav__inner">
       <a href="#home" class="nav__logo">{{BUSINESS_NAME}}</a>
       <ul class="nav__links" id="navLinks">
-        <li><a href="#menu">Menu</a></li>
-        <li><a href="#about">Our Story</a></li>
-        <li><a href="#contact">Hours</a></li>
-        <li><a href="#contact" class="nav__cta">Visit Us</a></li>
+        <li><a href="#menu" data-en="Menu" data-es="Menú">Menu</a></li>
+        <li><a href="#about" data-en="Our Story" data-es="Nuestra Historia">Our Story</a></li>
+        <li><a href="#contact" data-en="Hours" data-es="Horario">Hours</a></li>
+        <li><a href="#contact" class="nav__cta" data-en="Visit Us" data-es="Visítanos">Visit Us</a></li>
       </ul>
+      {{BILINGUAL_TOGGLE}}
       <button class="nav__hamburger" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </nav>
@@ -38,8 +39,8 @@
       <p class="hero__tagline">{{TAGLINE}}</p>
       <p class="hero__sub">{{HERO_SUBTITLE}}</p>
       <div class="hero__actions">
-        <a href="#menu" class="btn btn--hero">View Menu</a>
-        <a href="#contact" class="btn btn--ghost">Find Us</a>
+        <a href="#menu" class="btn btn--hero" data-en="View Menu" data-es="Ver Menú">View Menu</a>
+        <a href="#contact" class="btn btn--ghost" data-en="Find Us" data-es="Encuéntranos">Find Us</a>
       </div>
     </div>
     <div class="hero__scroll-indicator"><div class="hero__scroll-line"></div></div>
@@ -57,12 +58,14 @@
 
   {{PHOTOS_SECTION}}
 
+  {{DELIVERY_SECTION}}
+
   <section class="menu" id="menu">
     <div class="container">
       <div class="section-header reveal">
-        <span class="label-chip">Our Offerings</span>
-        <h2 class="section-title">The Menu</h2>
-        <p class="section-desc">Crafted with care, served with love.</p>
+        <span class="label-chip" data-en="Our Offerings" data-es="Lo Que Ofrecemos">Our Offerings</span>
+        <h2 class="section-title" data-en="The Menu" data-es="El Menú">The Menu</h2>
+        <p class="section-desc" data-en="Crafted with care, served with love." data-es="Hecho con cariño, servido con amor.">Crafted with care, served with love.</p>
       </div>
       <div class="menu__grid">
         <div class="menu-card reveal"><div class="menu-card__top"><h3 class="menu-card__name">{{SERVICE_1_NAME}}</h3><span class="menu-card__price">{{SERVICE_1_PRICE}}</span></div><p class="menu-card__desc">{{SERVICE_1_DESC}}</p></div>
@@ -89,10 +92,10 @@
           <div class="about__badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>Locally Loved</div>
         </div>
         <div class="about__text reveal" style="--delay:.15s">
-          <span class="label-chip">Our Story</span>
+          <span class="label-chip" data-en="Our Story" data-es="Nuestra Historia">Our Story</span>
           <h2 class="section-title">About {{BUSINESS_NAME}}</h2>
           <p class="about__body">{{ABOUT}}</p>
-          <a href="#contact" class="btn btn--primary" style="margin-top:2rem">Come Say Hi</a>
+          <a href="#contact" class="btn btn--primary" style="margin-top:2rem" data-en="Come Say Hi" data-es="Ven a Saludarnos">Come Say Hi</a>
         </div>
       </div>
     </div>
@@ -105,7 +108,7 @@
         <span class="label-chip label-chip--light">Today</span>
         <h2 class="cta__title">Come In &amp; Stay Awhile</h2>
         <p class="cta__desc">A warm seat, a great cup, and good company — that's what we're here for.</p>
-        <a href="#contact" class="btn btn--hero">Get Directions</a>
+        <a href="#contact" class="btn btn--hero" data-en="Get Directions" data-es="Cómo Llegar">Get Directions</a>
       </div>
     </div>
   </section>
@@ -114,17 +117,17 @@
     <div class="container">
       <div class="contact__grid">
         <div class="contact__hours reveal">
-          <span class="label-chip">Hours</span>
-          <h2 class="section-title">When We're Open</h2>
+          <span class="label-chip" data-en="Hours" data-es="Horario">Hours</span>
+          <h2 class="section-title" data-en="When We're Open" data-es="Cuándo Estamos Abiertos">When We're Open</h2>
           <div class="hours-list">
-            <div class="hours-row"><span>Mon – Fri</span><span class="hours-time">{{HOURS_MON_FRI}}</span></div>
-            <div class="hours-row"><span>Saturday</span><span class="hours-time">{{HOURS_SAT}}</span></div>
-            <div class="hours-row"><span>Sunday</span><span class="hours-time">{{HOURS_SUN}}</span></div>
+            <div class="hours-row"><span data-en="Mon – Fri" data-es="Lun – Vie">Mon – Fri</span><span class="hours-time">{{HOURS_MON_FRI}}</span></div>
+            <div class="hours-row"><span data-en="Saturday" data-es="Sábado">Saturday</span><span class="hours-time">{{HOURS_SAT}}</span></div>
+            <div class="hours-row"><span data-en="Sunday" data-es="Domingo">Sunday</span><span class="hours-time">{{HOURS_SUN}}</span></div>
           </div>
         </div>
         <div class="contact__info reveal" style="--delay:.15s">
-          <span class="label-chip">Find Us</span>
-          <h2 class="section-title">Come By</h2>
+          <span class="label-chip" data-en="Find Us" data-es="Encuéntranos">Find Us</span>
+          <h2 class="section-title" data-en="Come By" data-es="Visítanos">Come By</h2>
           <div class="contact-items">
             <a class="contact-item" href="tel:{{PHONE}}"><div class="contact-item__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 11a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 0h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 7.54a16 16 0 0 0 6 6l.95-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div><span>{{PHONE}}</span></a>
             <a class="contact-item" href="mailto:{{EMAIL}}"><div class="contact-item__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div><span>{{EMAIL}}</span></a>
@@ -142,6 +145,7 @@
         <p class="footer__copy">© {{YEAR}} {{BUSINESS_NAME}}. All rights reserved.</p>
       </div>
     </div>
+    {{OWNER_PORTAL}}
   </footer>
 
   <script src="script.js"></script>

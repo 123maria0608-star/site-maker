@@ -46,3 +46,23 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     t.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
+
+// ── Bilingual toggle ──────────────────────────────────────────────────────────
+(function () {
+  const btn = document.getElementById('langToggle');
+  if (!btn) return;
+
+  let currentLang = 'en';
+
+  function applyLang(lang) {
+    document.querySelectorAll('[data-en]').forEach(el => {
+      el.textContent = lang === 'es' ? el.dataset.es : el.dataset.en;
+    });
+    btn.textContent = lang === 'es' ? 'ES | EN' : 'EN | ES';
+    currentLang = lang;
+  }
+
+  btn.addEventListener('click', () => {
+    applyLang(currentLang === 'en' ? 'es' : 'en');
+  });
+})();

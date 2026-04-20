@@ -65,7 +65,7 @@
       margin-bottom: 0.5rem;
     }
 
-    input, select {
+    input, select, textarea {
       width: 100%;
       background: var(--bg);
       border: 1px solid var(--border);
@@ -78,51 +78,11 @@
       transition: border-color 0.2s;
       -webkit-appearance: none;
     }
-    input:focus, select:focus { border-color: var(--accent); }
-    input::placeholder { color: var(--muted); }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+    input::placeholder, textarea::placeholder { color: var(--muted); }
+    textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
 
     .field { margin-bottom: 1.25rem; }
-
-    .vibes {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.5rem;
-    }
-    .vibe-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.6rem 0.25rem;
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
-      font-family: inherit;
-      color: var(--muted);
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-    }
-    .vibe-btn .dot {
-      width: 18px; height: 18px;
-      border-radius: 50%;
-    }
-    .vibe-btn.active {
-      border-color: var(--accent2);
-      background: rgba(168,85,247,0.08);
-      color: var(--accent2);
-    }
-    .vibe-btn:hover:not(.active) { border-color: #333350; }
-
-    .dots {
-      modern:  '#818cf8',
-      luxury:  '#c9a84c',
-      beachy:  '#5fa8d3',
-      minimal: '#c4963a',
-      bold:    '#ef233c',
-    }
 
     .btn-generate {
       width: 100%;
@@ -317,31 +277,15 @@
     </div>
     <div class="field">
       <label>Business Type</label>
-      <input type="text" id="businessType" placeholder="e.g. salon, auto repair, cafe, gym">
+      <input type="text" id="businessType" placeholder="e.g. salon, auto repair, cafe, taqueria">
     </div>
     <div class="field">
       <label>City / Location</label>
       <input type="text" id="city" placeholder="e.g. Los Angeles, CA">
     </div>
     <div class="field">
-      <label>Vibe</label>
-      <div class="vibes">
-        <button class="vibe-btn active" data-vibe="modern">
-          <div class="dot" style="background:#818cf8"></div>modern
-        </button>
-        <button class="vibe-btn" data-vibe="luxury">
-          <div class="dot" style="background:#c9a84c"></div>luxury
-        </button>
-        <button class="vibe-btn" data-vibe="beachy">
-          <div class="dot" style="background:#5fa8d3"></div>beachy
-        </button>
-        <button class="vibe-btn" data-vibe="minimal">
-          <div class="dot" style="background:#c4963a"></div>minimal
-        </button>
-        <button class="vibe-btn" data-vibe="bold">
-          <div class="dot" style="background:#ef233c"></div>bold
-        </button>
-      </div>
+      <label>Extra notes (optional)</label>
+      <textarea id="extraNotes" placeholder="e.g. Add doordash link, make it bilingual, add online menu..."></textarea>
     </div>
     <button class="btn-generate" id="generateBtn">Generate + Deploy</button>
   </div>
@@ -395,16 +339,6 @@
   </p>
 
   <script>
-    let selectedVibe = 'modern';
-
-    document.querySelectorAll('.vibe-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.vibe-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        selectedVibe = btn.dataset.vibe;
-      });
-    });
-
     document.getElementById('generateBtn').addEventListener('click', generate);
 
     ['businessName','businessType','city'].forEach(id => {
@@ -425,9 +359,10 @@
       const businessName = document.getElementById('businessName').value.trim();
       const businessType = document.getElementById('businessType').value.trim();
       const city         = document.getElementById('city').value.trim();
+      const extraNotes   = document.getElementById('extraNotes').value.trim();
 
       if (!businessName || !businessType || !city) {
-        alert('Please fill in all fields.');
+        alert('Please fill in Business Name, Type, and City.');
         return;
       }
 
@@ -446,7 +381,7 @@
         const res = await fetch('/generate', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ businessName, businessType, city, vibe: selectedVibe }),
+          body:    JSON.stringify({ businessName, businessType, city, extraNotes }),
         });
 
         const reader  = res.body.getReader();
@@ -524,6 +459,7 @@
       document.getElementById('businessName').value = '';
       document.getElementById('businessType').value = '';
       document.getElementById('city').value = '';
+      document.getElementById('extraNotes').value = '';
       document.getElementById('businessName').focus();
     }
   </script>

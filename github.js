@@ -7,7 +7,7 @@ function ghRequest(method, endpoint, body, token) {
     const data = body ? JSON.stringify(body) : null;
     const req  = https.request({
       hostname: 'api.github.com',
-      path:     `/repos/${endpoint.startsWith('/') ? endpoint.slice(1) : endpoint}`.replace('/repos//', '/'),
+      path:     endpoint.startsWith('/') ? endpoint : `/${endpoint}`,
       method,
       headers: {
         'Authorization': `token ${token}`,
