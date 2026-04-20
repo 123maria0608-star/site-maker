@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: site-maker
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GOOGLE_PLACES_KEY
+        sync: false

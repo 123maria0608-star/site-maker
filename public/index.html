@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Site Maker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:      #0a0a0f;
+      --surface: #12121a;
+      --border:  #1e1e2e;
+      --accent:  #7c3aed;
+      --accent2: #a855f7;
+      --text:    #f0f0ff;
+      --muted:   #6b6b8a;
+      --success: #10b981;
+      --error:   #ef4444;
+      --radius:  14px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--accent2);
+      margin-bottom: 0.25rem;
+    }
+    .logo-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 1.5rem;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    input, select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus { border-color: var(--accent); }
+    input::placeholder { color: var(--muted); }
+
+    .field { margin-bottom: 1.25rem; }
+
+    .vibes {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+    }
+    .vibe-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.6rem 0.25rem;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      font-family: inherit;
+      color: var(--muted);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .vibe-btn .dot {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+    }
+    .vibe-btn.active {
+      border-color: var(--accent2);
+      background: rgba(168,85,247,0.08);
+      color: var(--accent2);
+    }
+    .vibe-btn:hover:not(.active) { border-color: #333350; }
+
+    .dots {
+      modern:  '#818cf8',
+      luxury:  '#c9a84c',
+      beachy:  '#5fa8d3',
+      minimal: '#c4963a',
+      bold:    '#ef233c',
+    }
+
+    .btn-generate {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: opacity 0.15s, transform 0.1s;
+      letter-spacing: -0.01em;
+    }
+    .btn-generate:hover:not(:disabled) { opacity: 0.9; }
+    .btn-generate:active:not(:disabled) { transform: scale(0.98); }
+    .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Progress */
+    .progress-card {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 1.5rem;
+      width: 100%;
+      max-width: 480px;
+      margin-top: 1rem;
+    }
+    .progress-card.visible { display: block; }
+
+    .progress-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.6rem 0;
+      opacity: 0.3;
+      transition: opacity 0.3s;
+    }
+    .step.active { opacity: 1; }
+    .step.done   { opacity: 0.6; }
+    .step.error  { opacity: 1; }
+
+    .step-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    .step.active .step-icon { background: var(--accent); animation: pulse 1.2s infinite; }
+    .step.done   .step-icon { background: var(--success); }
+    .step.error  .step-icon { background: var(--error); }
+
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(124,58,237,0.5); }
+      50%      { box-shadow: 0 0 0 6px rgba(124,58,237,0); }
+    }
+
+    .step-text { font-size: 0.9rem; }
+    .step-text small { display: block; color: var(--muted); font-size: 0.75rem; margin-top: 0.1rem; }
+
+    /* Result */
+    .result-card {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--success);
+      border-radius: var(--radius);
+      padding: 1.75rem 1.5rem;
+      width: 100%;
+      max-width: 480px;
+      margin-top: 1rem;
+    }
+    .result-card.visible { display: block; }
+
+    .result-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--success);
+      margin-bottom: 0.25rem;
+    }
+    .result-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .url-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .url-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .url-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .url-text {
+      font-size: 0.85rem;
+      color: var(--accent2);
+      word-break: break-all;
+      flex: 1;
+    }
+    .copy-btn {
+      background: var(--border);
+      border: none;
+      border-radius: 6px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .copy-btn:hover { background: #2a2a3e; }
+
+    .btn-open {
+      display: block;
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--success);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+    .btn-another {
+      display: block;
+      width: 100%;
+      padding: 0.7rem;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      text-align: center;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    .btn-another:hover { color: var(--text); border-color: #333350; }
+
+    .note {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 1rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo">Site Maker</div>
+  <div class="logo-sub">Build &amp; deploy in 30 seconds</div>
+
+  <div class="card" id="formCard">
+    <div class="field">
+      <label>Business Name</label>
+      <input type="text" id="businessName" placeholder="e.g. Maria's Nail Salon" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>Business Type</label>
+      <input type="text" id="businessType" placeholder="e.g. salon, auto repair, cafe, gym">
+    </div>
+    <div class="field">
+      <label>City / Location</label>
+      <input type="text" id="city" placeholder="e.g. Los Angeles, CA">
+    </div>
+    <div class="field">
+      <label>Vibe</label>
+      <div class="vibes">
+        <button class="vibe-btn active" data-vibe="modern">
+          <div class="dot" style="background:#818cf8"></div>modern
+        </button>
+        <button class="vibe-btn" data-vibe="luxury">
+          <div class="dot" style="background:#c9a84c"></div>luxury
+        </button>
+        <button class="vibe-btn" data-vibe="beachy">
+          <div class="dot" style="background:#5fa8d3"></div>beachy
+        </button>
+        <button class="vibe-btn" data-vibe="minimal">
+          <div class="dot" style="background:#c4963a"></div>minimal
+        </button>
+        <button class="vibe-btn" data-vibe="bold">
+          <div class="dot" style="background:#ef233c"></div>bold
+        </button>
+      </div>
+    </div>
+    <button class="btn-generate" id="generateBtn">Generate + Deploy</button>
+  </div>
+
+  <div class="progress-card" id="progressCard">
+    <div class="progress-title">Building your site</div>
+    <div class="step" id="step-places">
+      <div class="step-icon">📍</div>
+      <div class="step-text">Google Places lookup<small>Pulling real photos, hours &amp; reviews</small></div>
+    </div>
+    <div class="step" id="step-build">
+      <div class="step-icon">🔨</div>
+      <div class="step-text">Building site<small>Generating HTML, CSS &amp; assets</small></div>
+    </div>
+    <div class="step" id="step-github">
+      <div class="step-icon">🚀</div>
+      <div class="step-text">Pushing to GitHub<small>Creating repo &amp; uploading files</small></div>
+    </div>
+    <div class="step" id="step-pages">
+      <div class="step-icon">🌐</div>
+      <div class="step-text">Going live<small>Enabling GitHub Pages</small></div>
+    </div>
+  </div>
+
+  <div class="result-card" id="resultCard">
+    <div class="result-title">Site is live</div>
+    <div class="result-sub">GitHub Pages takes ~60 seconds to activate the first time.</div>
+
+    <div class="url-box">
+      <div class="url-label">Live URL</div>
+      <div class="url-row">
+        <div class="url-text" id="liveUrl"></div>
+        <button class="copy-btn" onclick="copyUrl('liveUrl')">Copy</button>
+      </div>
+    </div>
+
+    <div class="url-box">
+      <div class="url-label">GitHub Repo</div>
+      <div class="url-row">
+        <div class="url-text" id="repoUrl"></div>
+        <button class="copy-btn" onclick="copyUrl('repoUrl')">Copy</button>
+      </div>
+    </div>
+
+    <a id="openBtn" href="#" target="_blank" class="btn-open">Open Site</a>
+    <button class="btn-another" onclick="resetForm()">Make another site</button>
+  </div>
+
+  <p class="note" id="bottomNote">
+    Pulls real photos &amp; reviews from Google.<br>Deploys instantly to GitHub Pages.
+  </p>
+
+  <script>
+    let selectedVibe = 'modern';
+
+    document.querySelectorAll('.vibe-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.vibe-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedVibe = btn.dataset.vibe;
+      });
+    });
+
+    document.getElementById('generateBtn').addEventListener('click', generate);
+
+    ['businessName','businessType','city'].forEach(id => {
+      document.getElementById(id).addEventListener('keydown', e => {
+        if (e.key === 'Enter') generate();
+      });
+    });
+
+    function setStep(id, state) {
+      const el = document.getElementById('step-' + id);
+      if (!el) return;
+      el.className = 'step ' + state;
+      const icons = { active: '⋯', done: '✓', error: '✗' };
+      if (icons[state]) el.querySelector('.step-icon').textContent = icons[state];
+    }
+
+    async function generate() {
+      const businessName = document.getElementById('businessName').value.trim();
+      const businessType = document.getElementById('businessType').value.trim();
+      const city         = document.getElementById('city').value.trim();
+
+      if (!businessName || !businessType || !city) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const btn = document.getElementById('generateBtn');
+      btn.disabled = true;
+      btn.textContent = 'Building...';
+
+      document.getElementById('progressCard').classList.add('visible');
+      document.getElementById('resultCard').classList.remove('visible');
+      document.getElementById('bottomNote').style.display = 'none';
+
+      ['places','build','github','pages'].forEach(s => setStep(s, ''));
+      setStep('places', 'active');
+
+      try {
+        const res = await fetch('/generate', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ businessName, businessType, city, vibe: selectedVibe }),
+        });
+
+        const reader  = res.body.getReader();
+        const decoder = new TextDecoder();
+        let   buffer  = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+
+          const parts = buffer.split('\n\n');
+          buffer = parts.pop();
+
+          for (const part of parts) {
+            const line = part.split('\n').find(l => l.startsWith('data: '));
+            if (!line) continue;
+            let msg;
+            try { msg = JSON.parse(line.slice(6)); } catch { continue; }
+
+            if (msg.step === 'places') { setStep('places', 'active'); }
+            if (msg.step === 'build')  { setStep('places', 'done'); setStep('build', 'active'); }
+            if (msg.step === 'github') { setStep('build', 'done');  setStep('github', 'active'); }
+            if (msg.step === 'done') {
+              setStep('github', 'done'); setStep('pages', 'done');
+              showResult(msg);
+            }
+            if (msg.step === 'error') {
+              ['places','build','github','pages'].forEach(s => {
+                const el = document.getElementById('step-' + s);
+                if (el && el.classList.contains('active')) setStep(s, 'error');
+              });
+              alert('Error: ' + msg.msg);
+              resetBtn();
+            }
+          }
+        }
+      } catch (err) {
+        alert('Connection error: ' + err.message);
+        resetBtn();
+      }
+    }
+
+    function showResult(msg) {
+      document.getElementById('liveUrl').textContent  = msg.liveUrl;
+      document.getElementById('repoUrl').textContent  = msg.repoUrl;
+      document.getElementById('openBtn').href         = msg.liveUrl;
+      document.getElementById('resultCard').classList.add('visible');
+      document.getElementById('bottomNote').style.display = '';
+      resetBtn();
+    }
+
+    function resetBtn() {
+      const btn = document.getElementById('generateBtn');
+      btn.disabled = false;
+      btn.textContent = 'Generate + Deploy';
+    }
+
+    function copyUrl(id) {
+      const text = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(text).catch(() => {
+        const el = document.createElement('textarea');
+        el.value = text;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+      });
+    }
+
+    function resetForm() {
+      document.getElementById('progressCard').classList.remove('visible');
+      document.getElementById('resultCard').classList.remove('visible');
+      document.getElementById('bottomNote').style.display = '';
+      document.getElementById('businessName').value = '';
+      document.getElementById('businessType').value = '';
+      document.getElementById('city').value = '';
+      document.getElementById('businessName').focus();
+    }
+  </script>
+</body>
+</html>

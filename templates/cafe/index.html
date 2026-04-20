@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{BUSINESS_NAME}} — {{CITY}}</title>
+  <meta name="description" content="{{TAGLINE}} — {{BUSINESS_NAME}} in {{CITY}}.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="{{FONT_URL}}" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  {{EXTRA_STYLES}}
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="nav" id="nav">
+    <div class="nav__container">
+      <a href="#home" class="nav__logo">{{BUSINESS_NAME}}</a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#hours">Hours</a></li>
+        <li><a href="#contact" class="nav__cta">Visit Us</a></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero" id="home">
+    <div class="hero__bg">{{HERO_PHOTO_DIV}}</div>
+    <div class="hero__content">
+      <p class="hero__pre">Welcome to</p>
+      <h1 class="hero__title">{{BUSINESS_NAME}}</h1>
+      <p class="hero__sub">{{TAGLINE}}</p>
+      <div class="hero__actions">
+        <a href="#menu" class="btn btn--primary">View Menu</a>
+        <a href="#hours" class="btn btn--ghost">Find Us</a>
+      </div>
+    </div>
+    <div class="hero__scroll">
+      <span>Scroll</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ── Highlights ── -->
+  <section class="highlights">
+    <div class="container">
+      <div class="highlights__grid">
+        <div class="highlight fade-in">
+          <div class="highlight__icon">{{HIGHLIGHT_1_ICON}}</div>
+          <h3 class="highlight__title">{{HIGHLIGHT_1}}</h3>
+          <p class="highlight__desc">{{HIGHLIGHT_1_DESC}}</p>
+        </div>
+        <div class="highlight fade-in">
+          <div class="highlight__icon">{{HIGHLIGHT_2_ICON}}</div>
+          <h3 class="highlight__title">{{HIGHLIGHT_2}}</h3>
+          <p class="highlight__desc">{{HIGHLIGHT_2_DESC}}</p>
+        </div>
+        <div class="highlight fade-in">
+          <div class="highlight__icon">{{HIGHLIGHT_3_ICON}}</div>
+          <h3 class="highlight__title">{{HIGHLIGHT_3}}</h3>
+          <p class="highlight__desc">{{HIGHLIGHT_3_DESC}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Menu ── -->
+  <section class="menu" id="menu">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Our Offerings</span>
+        <h2 class="section-title">The Menu</h2>
+        <p class="section-desc">{{HERO_SUBTITLE}}</p>
+      </div>
+      <div class="menu__grid">
+        <div class="menu-card fade-in">
+          <div class="menu-card__top">
+            <h3 class="menu-card__name">{{SERVICE_1_NAME}}</h3>
+            <span class="menu-card__price">{{SERVICE_1_PRICE}}</span>
+          </div>
+          <p class="menu-card__desc">{{SERVICE_1_DESC}}</p>
+        </div>
+        <div class="menu-card fade-in">
+          <div class="menu-card__top">
+            <h3 class="menu-card__name">{{SERVICE_2_NAME}}</h3>
+            <span class="menu-card__price">{{SERVICE_2_PRICE}}</span>
+          </div>
+          <p class="menu-card__desc">{{SERVICE_2_DESC}}</p>
+        </div>
+        <div class="menu-card fade-in">
+          <div class="menu-card__top">
+            <h3 class="menu-card__name">{{SERVICE_3_NAME}}</h3>
+            <span class="menu-card__price">{{SERVICE_3_PRICE}}</span>
+          </div>
+          <p class="menu-card__desc">{{SERVICE_3_DESC}}</p>
+        </div>
+        <div class="menu-card fade-in">
+          <div class="menu-card__top">
+            <h3 class="menu-card__name">{{SERVICE_4_NAME}}</h3>
+            <span class="menu-card__price">{{SERVICE_4_PRICE}}</span>
+          </div>
+          <p class="menu-card__desc">{{SERVICE_4_DESC}}</p>
+        </div>
+        <div class="menu-card fade-in">
+          <div class="menu-card__top">
+            <h3 class="menu-card__name">{{SERVICE_5_NAME}}</h3>
+            <span class="menu-card__price">{{SERVICE_5_PRICE}}</span>
+          </div>
+          <p class="menu-card__desc">{{SERVICE_5_DESC}}</p>
+        </div>
+        <div class="menu-card fade-in">
+          <div class="menu-card__top">
+            <h3 class="menu-card__name">{{SERVICE_6_NAME}}</h3>
+            <span class="menu-card__price">{{SERVICE_6_PRICE}}</span>
+          </div>
+          <p class="menu-card__desc">{{SERVICE_6_DESC}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── About ── -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about__grid">
+        <div class="about__visual" aria-hidden="true">
+          <div class="about__blob"></div>
+          <div class="about__ring"></div>
+        </div>
+        <div class="about__text fade-in">
+          <span class="section-label">Our Story</span>
+          <h2 class="section-title">About {{BUSINESS_NAME}}</h2>
+          <p>{{ABOUT}}</p>
+          <a href="#contact" class="btn btn--primary" style="margin-top:1.5rem">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Hours & Contact ── -->
+  <section class="hours-section" id="hours">
+    <div class="container">
+      <div class="hours__grid">
+        <div class="hours__info fade-in">
+          <span class="section-label">When to Visit</span>
+          <h2 class="section-title">Hours</h2>
+          <table class="hours__table">
+            <tbody>
+              <tr><td>Monday – Friday</td><td>{{HOURS_MON_FRI}}</td></tr>
+              <tr><td>Saturday</td><td>{{HOURS_SAT}}</td></tr>
+              <tr><td>Sunday</td><td>{{HOURS_SUN}}</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="hours__contact fade-in" id="contact">
+          <span class="section-label">Find Us</span>
+          <h2 class="section-title">Say Hello</h2>
+          <div class="contact-list">
+            <div class="contact-item">
+              <span class="contact-icon">📍</span>
+              <p>{{CITY}}</p>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">📞</span>
+              <p>{{PHONE}}</p>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">✉️</span>
+              <p>{{EMAIL}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__logo">{{BUSINESS_NAME}}</p>
+      <p class="footer__tagline">{{TAGLINE}}</p>
+      <p class="footer__copy">© {{YEAR}} {{BUSINESS_NAME}}. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
